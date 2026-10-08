@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { defineConfig, env } from 'prisma/config';
+import { defineConfig } from 'prisma/config';
 
 // Prisma 7 reads connection settings here rather than from schema.prisma.
 export default defineConfig({
@@ -11,6 +11,8 @@ export default defineConfig({
   datasource: {
     // Migrations need a direct connection. Hosted Postgres often gives the app a pooled
     // (PgBouncer) URL, so DIRECT_DATABASE_URL, when set, is used for the Prisma CLI only.
-    url: process.env.DIRECT_DATABASE_URL ?? env('DATABASE_URL'),
+    // No URL is fine for `prisma generate`, which runs on every install (CI, Docker and the
+    // Expo cloud build); migrate/seed report the missing URL themselves.
+    url: process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL ?? '',
   },
 });
