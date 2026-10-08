@@ -47,6 +47,13 @@
     ],
     "experiments": {
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7251ec32-1f95-42f0-bb81-29452f3972a3"
+      }
+    },
+    "owner": "akshara2101"
   }
 }
