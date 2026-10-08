@@ -49,4 +49,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
   CMD wget -qO- "http://127.0.0.1:${PORT}/api/health/ready" >/dev/null || exit 1
 # Apply committed migrations (never a reset or `db push`), then start the server.
-CMD ["sh", "-c", "./node_modules/.bin/prisma migrate deploy && exec node dist/server.js"]
+# Set RUN_MIGRATIONS=false where migrations run as a separate release step (e.g. Cloud Run).
+CMD ["sh", "-c", "if [ \"$RUN_MIGRATIONS\" != \"false\" ]; then ./node_modules/.bin/prisma migrate deploy; fi && exec node dist/server.js"]
