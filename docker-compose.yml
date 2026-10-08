@@ -1,0 +1,42 @@
+# Local development database, plus an optional production-like container of the whole app.
+#   pnpm db:up                         -> PostgreSQL only (for pnpm dev)
+#   docker compose --profile app up    -> PostgreSQL + the built API/web container on :8080
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: stride
+      POSTGRES_PASSWORD: stride
+      POSTGRES_DB: stride
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - stride-db:/var/lib/postgresql/data
+      - ./docker/postgres:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U stride -d stride']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    profiles: ['app']
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 8080
+      DATABASE_URL: postgresql://stride:stride@db:5432/stride
+      JWT_SECRET: ${JWT_SECRET:-local-compose-secret-change-me-0123456789abcdef}
+      CORS_ORIGINS: http://localhost:8080
+      # Plain HTTP on localhost, so the session cookie cannot be marked Secure here.
+      COOKIE_SECURE: 'false'
+      TRUST_PROXY: 0
+    ports:
+      - '8080:8080'
+
+volumes:
+  stride-db:

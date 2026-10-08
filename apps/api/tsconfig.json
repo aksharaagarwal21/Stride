@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node"],
+    // The generated Prisma client imports its own files with ".ts" extensions.
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src", "prisma", "test", "prisma.config.ts", "tsup.config.ts", "vitest.config.ts"]
+}

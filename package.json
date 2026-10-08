@@ -1,0 +1,38 @@
+{
+  "name": "stride",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stride — project and task management for web and Android on one shared API.",
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @stride/api --filter @stride/web dev",
+    "dev:web": "pnpm --filter @stride/web dev",
+    "dev:api": "pnpm --filter @stride/api dev",
+    "dev:mobile": "pnpm --filter @stride/mobile start",
+    "build": "pnpm --filter @stride/web build && pnpm --filter @stride/api build",
+    "start": "pnpm --filter @stride/api start",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --no-bail typecheck",
+    "test": "pnpm --filter @stride/shared --filter @stride/api test",
+    "test:e2e": "pnpm --filter @stride/web test:e2e",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @stride/api db:migrate",
+    "db:deploy": "pnpm --filter @stride/api db:deploy",
+    "db:seed": "pnpm --filter @stride/api db:seed"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "eslint": "9.39.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "globals": "17.13.0",
+    "prettier": "3.9.9",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1"
+  }
+}
