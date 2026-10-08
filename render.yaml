@@ -1,0 +1,25 @@
+# Render Blueprint: one Docker web service that serves the API (/api) and the web app (/).
+# PostgreSQL is hosted on Neon; paste its connection string as DATABASE_URL when prompted.
+services:
+  - type: web
+    name: stride
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: build/stride
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health/ready
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      # Render's proxy sets X-Forwarded-For/Proto; trust exactly one hop.
+      - key: TRUST_PROXY
+        value: '1'
+      - key: SESSION_TTL_HOURS
+        value: '12'

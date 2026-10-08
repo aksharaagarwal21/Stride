@@ -1,0 +1,17 @@
+**/node_modules
+**/dist
+**/.env
+**/.env.*
+!**/.env.example
+.git
+.github
+docs
+coverage
+**/*.log
+apps/web/test-results
+apps/web/playwright-report
+apps/api/src/generated
+# The mobile app is not part of the server image; only its manifest is needed for the lockfile.
+apps/mobile/*
+!apps/mobile/package.json
+Prompt.txt

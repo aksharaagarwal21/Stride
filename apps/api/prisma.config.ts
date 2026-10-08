@@ -9,6 +9,8 @@ export default defineConfig({
     seed: 'tsx prisma/seed.ts',
   },
   datasource: {
-    url: env('DATABASE_URL'),
+    // Migrations need a direct connection. Hosted Postgres often gives the app a pooled
+    // (PgBouncer) URL, so DIRECT_DATABASE_URL, when set, is used for the Prisma CLI only.
+    url: process.env.DIRECT_DATABASE_URL ?? env('DATABASE_URL'),
   },
 });
