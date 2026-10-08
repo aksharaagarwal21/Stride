@@ -17,7 +17,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://REPLACE-WITH-DEPLOYED-API-ORIGIN"
+        "EXPO_PUBLIC_API_URL": "https://stride-j1ec.onrender.com"
       }
     },
     "production": {
@@ -25,7 +25,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://REPLACE-WITH-DEPLOYED-API-ORIGIN"
+        "EXPO_PUBLIC_API_URL": "https://stride-j1ec.onrender.com"
       }
     }
   }

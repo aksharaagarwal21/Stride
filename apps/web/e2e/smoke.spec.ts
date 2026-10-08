@@ -84,11 +84,12 @@ test('register, manage a project and its tasks, filter, then log out', async ({ 
   await drawer.getByRole('button', { name: 'Close' }).last().click();
   await expect(page.getByRole('button', { name: 'Book the venue', exact: true })).toBeVisible();
 
-  // Dashboard reflects the server aggregates
+  // Dashboard reflects the server aggregates. Cached numbers show first and are refreshed in
+  // the background, so poll until the refetched values arrive.
   await page.getByRole('link', { name: 'Overview' }).click();
   await expect(page.getByText('Active projects')).toBeVisible();
+  await expect.poll(() => metric(page, 'Total Tasks')).toBe('2');
   expect(await metric(page, 'Total Projects')).toBe('1');
-  expect(await metric(page, 'Total Tasks')).toBe('2');
   expect(await metric(page, 'Completed Tasks')).toBe('1');
   expect(await metric(page, 'Pending Tasks')).toBe('0');
   expect(await metric(page, 'Projects In Progress')).toBe('1');

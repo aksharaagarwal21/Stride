@@ -88,7 +88,7 @@ Mobile status: typecheck, Expo Doctor (21/21) and a full Android Metro/Hermes bu
 - [x] Database schema / ER diagram — [architecture.md](architecture.md)
 - [x] API documentation
 - [x] README
-- [ ] Deployment URL for web and backend — needs a hosting login
+- [x] Deployment URL for web and backend — https://stride-j1ec.onrender.com (API under `/api`)
 - [ ] Android APK or Expo distribution link — needs an Expo login for the EAS cloud build
 - [ ] 5-minute screen recording — to be recorded ([demo-script.md](demo-script.md))
 

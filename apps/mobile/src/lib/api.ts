@@ -33,5 +33,6 @@ export const api = createApiClient({
   platform: 'mobile',
   getToken: () => currentToken,
   onUnauthorized: (error) => unauthorizedListener?.(error),
-  timeoutMs: 15_000,
+  // Generous timeout: a free-tier host can take ~30s to wake from sleep on the first request.
+  timeoutMs: 30_000,
 });
