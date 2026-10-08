@@ -48,6 +48,13 @@ export function utcDateToDateOnly(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+/** Date-only string → local-midnight Date, for native date pickers that work in local time. */
+export function dateOnlyToLocalDate(value: string): Date {
+  const parts = parseDateOnly(value);
+  if (!parts) return new Date();
+  return new Date(parts.year, parts.month - 1, parts.day);
+}
+
 /** Adds whole days to a date-only string. */
 export function addDays(value: string, days: number): string {
   const date = dateOnlyToUtcDate(value);
