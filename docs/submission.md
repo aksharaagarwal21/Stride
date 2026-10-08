@@ -8,8 +8,8 @@
 | README                       | [README.md](../README.md)                                                                                            | Done                                                                                         |
 | Web app URL                  | https://stride-j1ec.onrender.com                                                                                     | Live (Render free tier: sleeps after 15 min idle; the first visit can take ~30–60 s to wake) |
 | Backend (API) URL            | https://stride-j1ec.onrender.com/api — e.g. [`/api/health/ready`](https://stride-j1ec.onrender.com/api/health/ready) | Live (same service and origin as the web app)                                                |
-| Android APK                  | _pending EAS build_                                                                                                  | Not yet built                                                                                |
-| 5-minute screen recording    | _to be recorded_ — follow [docs/demo-script.md](demo-script.md)                                                      | Not yet recorded                                                                             |
+| 5-minute screen recording    | https://drive.google.com/file/d/1DAVwCcpF0GeSRlCytd_lfKIRc1vJaj3b/view?usp=sharing
+                                                                                                                                  |
 
 ## Verification performed
 
