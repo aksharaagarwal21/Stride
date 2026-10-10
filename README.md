@@ -1,5 +1,11 @@
 # Stride
 
+[![CI](https://github.com/aksharaagarwal21/Stride/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/aksharaagarwal21/Stride/actions/workflows/ci.yml)
+[![Live demo](https://img.shields.io/badge/live-stride--j1ec.onrender.com-2ea44f)](https://stride-j1ec.onrender.com)
+![Node.js 22](https://img.shields.io/badge/node-22-339933?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![PostgreSQL 17](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white)
+
 Stride is a project and task manager with a **React web app** and a native **Android app** (Expo / React Native) that share **one Express API and one PostgreSQL database**. Sign in with the same account on either platform, create projects, break them into tasks, track progress, and see the same data on both after a refresh.
 
 ![Stride dashboard](docs/screenshots/web-dashboard.png)
@@ -195,4 +201,11 @@ Do not run `pnpm db:seed` against a public deployment.
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on every push and pull request: install, lint, format check, typecheck (all four workspaces), unit + integration tests against a PostgreSQL service, the production build, and the Playwright smoke test.
+`.github/workflows/ci.yml` runs on pushes to `main` and `build/stride`, on every pull request, and on demand (**Actions → CI → Run workflow**). It has two jobs:
+
+| Job                              | What it checks                                                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Lint, typecheck, test, build** | install, ESLint, Prettier, TypeScript in all four workspaces, unit + integration tests against a PostgreSQL service, production build |
+| **Browser smoke test**           | applies the migrations to a fresh database, then runs the Playwright test in Chromium (only after the first job passes)               |
+
+If the browser test fails, its Playwright traces are attached to the run as the `playwright-traces` artifact (kept 7 days); open one with `npx playwright show-trace <file>.zip`. The workflow token is read-only, and each job has a time limit so a stuck run can't hold a runner.
