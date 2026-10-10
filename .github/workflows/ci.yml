@@ -4,15 +4,21 @@ on:
   push:
     branches: [main, build/stride]
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# The jobs only read the repository, so the token gets no write access.
+permissions:
+  contents: read
+
 jobs:
   checks:
     name: Lint, typecheck, test, build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     services:
       postgres:
         image: postgres:17-alpine
@@ -44,6 +50,7 @@ jobs:
     name: Browser smoke test
     runs-on: ubuntu-latest
     needs: checks
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:17-alpine
@@ -70,3 +77,12 @@ jobs:
       - run: pnpm db:deploy
       - run: pnpm --filter @stride/web exec playwright install --with-deps chromium
       - run: pnpm test:e2e
+      # Playwright keeps a trace of each failed test; download it from the run page and
+      # open it with `npx playwright show-trace <file>.zip`.
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: apps/web/test-results/
+          retention-days: 7
