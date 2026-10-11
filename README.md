@@ -128,7 +128,7 @@ The app finds the API automatically: with `EXPO_PUBLIC_API_URL` unset, it uses t
 
 ```bash
 pnpm db:up
-pnpm test          # 17 shared unit tests + 37 API integration tests
+pnpm test          # 21 shared unit tests + 37 API integration tests
 pnpm test:e2e      # browser: register → project/task CRUD → filters/dashboard → logout
 ```
 

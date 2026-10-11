@@ -2,8 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   addDays,
   dateOnlyToUtcDate,
+  daysBetween,
   describeDue,
   formatDate,
+  formatShortDate,
+  formatTimestamp,
   isValidDateOnly,
   utcDateToDateOnly,
 } from './dates';
@@ -36,6 +39,34 @@ describe('date-only helpers', () => {
     expect(describeDue('2026-10-08', '2026-10-08')).toBe('Due today');
     expect(describeDue('2026-10-09', '2026-10-08')).toBe('Due tomorrow');
     expect(describeDue('2026-10-05', '2026-10-08')).toBe('3 days overdue');
+  });
+
+  it('switches from "Due in N days" to a date one week out', () => {
+    expect(describeDue('2026-10-07', '2026-10-08')).toBe('1 day overdue');
+    expect(describeDue('2026-10-14', '2026-10-08')).toBe('Due in 6 days');
+    expect(describeDue('2026-10-15', '2026-10-08')).toBe('Due Oct 15');
+    expect(describeDue('2027-01-05', '2026-10-08')).toBe('Due Jan 5, 2027');
+  });
+
+  it('counts days across leap days and year ends', () => {
+    expect(daysBetween('2028-02-28', '2028-03-01')).toBe(2);
+    expect(daysBetween('2026-12-31', '2027-01-01')).toBe(1);
+    expect(daysBetween('2026-12-31', '2026-12-01')).toBe(-30);
+    expect(isValidDateOnly('1899-12-31')).toBe(false);
+    expect(isValidDateOnly('3000-01-01')).toBe(false);
+  });
+
+  it('shows the year only when it differs and leaves bad input readable', () => {
+    expect(formatShortDate('2026-10-08', '2026-01-01')).toBe('Oct 8');
+    expect(formatShortDate('2027-10-08', '2026-01-01')).toBe('Oct 8, 2027');
+    expect(formatShortDate('not-a-date')).toBe('not-a-date');
+    expect(formatDate('2026-02-30')).toBe('2026-02-30');
+    expect(formatTimestamp('2026-10-08T12:00:00Z')).toBe('Oct 8, 2026');
+    expect(formatTimestamp('yesterday')).toBe('yesterday');
+  });
+
+  it('refuses to convert an invalid date to a Date', () => {
+    expect(() => dateOnlyToUtcDate('2026-13-01')).toThrow(RangeError);
   });
 });
 
